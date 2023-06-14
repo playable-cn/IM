@@ -23,6 +23,15 @@ class IM implements IMInterface
 
     const ENDPOINT_TEMPLATE = 'https://console.tim.qq.com/%s/%s/%s?%s';
 
+    const ENDPOINT_TEMPLATES = [
+        'zh' => 'https://console.tim.qq.com/%s/%s/%s?%s',
+        'sgp' => 'https://adminapisgp.im.qcloud.com/%s/%s/%s?%s',
+        'kr' => 'https://adminapikr.im.qcloud.com/%s/%s/%s?%s',
+        'ger' => 'https://adminapiger.im.qcloud.com/%s/%s/%s?%s',
+        'ind' => 'https://adminapiind.im.qcloud.com/%s/%s/%s?%s',
+        'usa' => 'https://adminapiusa.im.qcloud.com/%s/%s/%s?%s',
+    ];
+
     const ENDPOINT_VERSION = 'v4';
 
     const ENDPOINT_FORMAT = 'json';
@@ -84,7 +93,8 @@ class IM implements IMInterface
             'contenttype' => self::ENDPOINT_FORMAT,
         ]);
 
-        return sprintf(self::ENDPOINT_TEMPLATE, self::ENDPOINT_VERSION, $servername, $command, $query);
+        return sprintf($this->getEndpoint(), self::ENDPOINT_VERSION, $servername, $command, $query);
+//        return sprintf(self::ENDPOINT_TEMPLATE, self::ENDPOINT_VERSION, $servername, $command, $query);
     }
 
     /**
@@ -102,5 +112,14 @@ class IM implements IMInterface
         $api = new TLSSigAPIv2($this->config->get('sdk_app_id'), $this->config->get('secret_key'));
 
         return $api->genUserSig($identifier, $expires);
+    }
+
+    protected function getEndpoint()
+    {
+        $region = $this->config->get('region');
+        if (empty($region) || !isset(self::ENDPOINT_TEMPLATES[$region])) {
+            $region = 'zh';
+        }
+        return self::ENDPOINT_TEMPLATES[$region];
     }
 }
