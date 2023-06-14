@@ -11,7 +11,7 @@
 ## 安装
 
 ```shell
-$ composer require hedeqiang/ten-im -vvv
+$ composer require playable-cn/ten-im -vvv
 ```
 
 > 说明：本项目默认会引入 [tencent/tls-sig-api-v2](https://github.com/tencentyun/tls-sig-api-v2-php) 扩展包，所以你不需要手动引入 `tencent/tls-sig-api-v2`,否则可能会造成依赖冲突
@@ -24,8 +24,15 @@ $ composer require hedeqiang/ten-im -vvv
 [REST API 接口列表](https://cloud.tencent.com/document/product/269/1520)
 
 ## 使用
-
-
+ ```
+ config 配置
+ SDK_APP_ID=
+ IDENTIFIER=
+ IDENTIFIER=
+ SECRET_KEY=
+ REGION=
+ // REGION 默认zh，还可以配置：sgp、kr、ger、ind、usa
+ ```
 
 > 其中 `send` 方法接收三个参数。第一个参数 $servicename : 内部服务名，不同的 servicename 对应不同的服务类型；第二个参数 `$command`：命令字，与 servicename 组合用来标识具体的业务功能；第三个参数为请求包主体 
 
@@ -57,6 +64,7 @@ $config = [
     'sdk_app_id' => '',
     'identifier' => '',
     'secret_key' => '',
+    'region' => '',
 ];
 $im = new IM($config);
 $params = [
